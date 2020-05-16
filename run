@@ -1,0 +1,6 @@
+
+cd /home/yash/Route/CppND-Route-Planning-Project
+
+cd build
+
+./OSM_A_star_search
