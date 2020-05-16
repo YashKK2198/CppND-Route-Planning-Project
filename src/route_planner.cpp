@@ -66,10 +66,16 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 
     //Use CalculateHValue below to implement the h-Value calculation.
     x->h_value = CalculateHValue(*x);//Heuristic component in [f=g+h] ----- Computed Earlier
+
+
+  // - For each node in current_node.neighbors, add the neighbor
+  // - to open_list and set the node's visited attribute to true.
+
+      open_list.push_back(x);
+
+      x->visited = true; //Node is visited and enterd in open_list. So it is marked as true.
+
   }
-
-
-
 
 }
 
