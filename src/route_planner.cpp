@@ -11,8 +11,12 @@ RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y, floa
     // TODO 2: Use the m_Model.FindClosestNode method to find the closest nodes to the starting and ending coordinates.
     // Store the nodes you find in the RoutePlanner's start_node and end_node attributes.
 
+    //closest of all neighborin nodes from start pt of a grid
     start_node = &m_Model.FindClosestNode(start_x,start_y);
+
+    //closest of all neighborin nodes from end pt of a grid
     end_node = &m_model.FindClosestNode(end_x,end_y);
+
 
     //RoutePlanner(start_node,end_node) = &m_Model.FindClosestNode(start_x,start_y_end_x,end_y);
 
@@ -26,19 +30,46 @@ RoutePlanner::RoutePlanner(RouteModel &model, float start_x, float start_y, floa
 
 float RoutePlanner::CalculateHValue(RouteModel::Node const *node) {
 
-  return node->distance(*end_node);
+  return node->distance(*end_node); //Heuristic cost
+
+  //Here as mentioned I have cumputed the cost of the node that it will take
+  //to reach the end of the grid from the present position as Hvalue
 
 }
 
 
-// TODO 4: Complete the AddNeighbors method to expand the current node by adding all unvisited neighbors to the open list.
+// TODO 4: Complete the AddNeighbors method to expand the current node by adding all unvisited neighbors
+//         to the open list.
 // Tips:
-// - Use the FindNeighbors() method of the current_node to populate current_node.neighbors vector with all the neighbors.
+// - Use the FindNeighbors() method of the current_node to populate current_node.neighbors vector with all
+// - the neighbors.
 // - For each node in current_node.neighbors, set the parent, the h_value, the g_value.
 // - Use CalculateHValue below to implement the h-Value calculation.
 // - For each node in current_node.neighbors, add the neighbor to open_list and set the node's visited attribute to true.
 
 void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
+
+  // - Use the FindNeighbors() method of the current_node to populate current_node.neighbors vector with all
+  // - the neighbors.
+  current_node->FindNeighbors();
+
+  // - For each node in current_node.neighbors, set the parent, the h_value, the g_value.
+  for(auto x : current_node->neighbors)
+  {
+    //parent is current_node
+    x->parent = current_node;
+
+    //So g_value of variable x is summation of g_value of current node
+    //That is cost it took to reach current_node + The cost it will take to reach goal node from the current_node
+    x->g_value = current_node->g_value + current_node->distance(*x);
+
+
+    //Use CalculateHValue below to implement the h-Value calculation.
+    x->h_value = CalculateHValue(*x);//Heuristic component in [f=g+h] ----- Computed Earlier
+  }
+
+
+
 
 }
 
