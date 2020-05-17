@@ -135,6 +135,17 @@ std::vector<RouteModel::Node> RoutePlanner::ConstructFinalPath(RouteModel::Node 
 
     // TODO: Implement your solution here.
 
+    // - This method should take the current (final) node as an argument and iteratively follow the
+    //   chain of parents of nodes until the starting node is found.
+    // - For each node in the chain, add the distance from the node to its parent to the distance variable.
+
+    while (current_node->parent != 0)
+    {
+      /* code */
+      parent = parent->distance(*current_node);
+      distance = distance + current_node->parent;
+    }
+
     distance *= m_Model.MetricScale(); // Multiply the distance by the scale of the map to get meters.
     return path_found;
 
