@@ -80,6 +80,24 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 }
 
 
+
+//  Below I have created an extra funtion called CompareNodes()
+//  This function takes the g_value anf h_value of both the
+//  nodes and returns whichever has the lowest value
+//  which is then removed in the next function
+
+bool CompareNodes(RouteModel::Node *firstnode,RouteModel::Node *secondnode)
+{
+  float res_of_firstnode,res_of_secondnode;
+
+  res_of_firstnode = firstnode.h_value + firstnode.g_value;
+  res_of_secondnode = secondnode.h_value + secondnode.g_value;
+
+  return res_of_firstnode > res_of_secondnode; //will need to access the result using open_list.back()
+}
+
+
+
 // TODO 5: Complete the NextNode method to sort the open list and return the next node.
 // Tips:
 // - Sort the open_list according to the sum of the h value and g value.
@@ -89,6 +107,16 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 
 RouteModel::Node *RoutePlanner::NextNode() {
 
+  std::sort(open_list.begin(),open_list.end(),CompareNodes);
+
+  RouteModel::Node *lowest_sum = open_list.back();
+
+//  Removing the above node from the open_list vector
+
+  open_list.pop_back();
+
+
+return lowest_sum;
 }
 
 
